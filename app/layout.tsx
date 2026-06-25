@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   description: "Discovery, Turkiye'nin en premium tanisma katalogu. Gercek profiller, guvenli iletisim.",
   keywords: "tanisma, ask, iliski, partner, discovery, premium",
   authors: [{ name: "BY EXPOWER" }],
+  verification: {
+    google: "DA5xXNgSBic4gh7FokxO02iBancbG8Com8bPiKwSjhU",
+  },
   openGraph: {
     title: "Discovery | Premium Tanisma Katalogu",
     description: "Turkiye'nin en premium tanisma katalogu.",
