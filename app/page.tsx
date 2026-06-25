@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const ProfileCard = ({ profile }: { profile: any }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const photos = profile.photos || [];
 
-const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (photos.length <= 1) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -29,7 +30,7 @@ const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
         </div>
         {photos.length > 1 && (
           <div className="absolute bottom-5 inset-x-0 flex justify-center gap-1.5 px-10">
-{photos.map((_: any, i: number) => (
+            {photos.map((_: any, i: number) => (
               <div
                 key={i}
                 className={"h-1 rounded-full transition-all duration-300 " + (i === currentIndex ? "w-8 bg-white" : "w-2 bg-white/40")}
@@ -51,11 +52,17 @@ const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
         <p className="text-slate-500 dark:text-slate-400 italic text-sm leading-relaxed line-clamp-3">
           {profile.bio}
         </p>
-        <div className="w-full grid grid-cols-2 gap-3 pt-4">
-          <a href={"https://wa.me/" + profile.whatsapp} target="_blank" className="flex items-center justify-center bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-bold transition-all">
+        <Link
+          href={"/profile/" + profile._id}
+          className="w-full flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-indigo-500/20"
+        >
+          Profili Goruntule →
+        </Link>
+        <div className="w-full grid grid-cols-2 gap-3">
+          <a href={"https://wa.me/" + profile.whatsapp} target="_blank" className="flex items-center justify-center bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20">
             WhatsApp
           </a>
-          <a href={"https://t.me/" + profile.telegram} target="_blank" className="flex items-center justify-center bg-sky-500 hover:bg-sky-600 text-white py-4 rounded-2xl font-bold transition-all">
+          <a href={"https://t.me/" + profile.telegram} target="_blank" className="flex items-center justify-center bg-sky-500 hover:bg-sky-600 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-sky-500/20">
             Telegram
           </a>
         </div>
@@ -97,7 +104,7 @@ export default function Home() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {profiles.map((p: any) => (
-             <ProfileCard key={(p as any)._id} profile={p} />
+              <ProfileCard key={p._id} profile={p} />
             ))}
             {profiles.length === 0 && (
               <div className="col-span-full text-center py-32 bg-white dark:bg-slate-900 rounded-[3rem] border border-slate-200 dark:border-slate-800">
