@@ -5,21 +5,21 @@ import { useParams, useRouter } from 'next/navigation';
 export default function ProfilePage() {
   const params = useParams();
   const router = useRouter();
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     fetch('/api/profiles')
       .then(r => r.json())
-      .then(data => {
-        const found = data.find((p) => p._id === params.id);
+      .then((data: any[]) => {
+        const found = data.find((p: any) => p._id === params.id);
         setProfile(found || null);
         setLoading(false);
       });
   }, [params.id]);
 
-  const handleImageClick = (e) => {
+  const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!profile || profile.photos.length <= 1) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -45,18 +45,14 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 md:p-16">
       <div className="max-w-2xl mx-auto">
-        <button onClick={() => router.back()} className="mb-8 text-indigo-600 font-bold uppercase tracking-widest text-xs hover:text-indigo-800 transition-colors">
-          Geri Don
-        </button>
+        <button onClick={() => router.back()} className="mb-8 text-indigo-600 font-bold uppercase tracking-widest text-xs hover:text-indigo-800 transition-colors">Geri Don</button>
         <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
           <div className="relative aspect-[4/5] w-full overflow-hidden cursor-pointer" onClick={handleImageClick}>
             <img src={profile.photos[currentIndex] || "https://via.placeholder.com/400x500"} className="w-full h-full object-cover" alt={profile.name} />
-            <div className="absolute top-5 right-5 bg-white/20 backdrop-blur-md border border-white/30 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-widest">
-              Aktif
-            </div>
+            <div className="absolute top-5 right-5 bg-white/20 backdrop-blur-md border border-white/30 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-widest">Aktif</div>
             {profile.photos.length > 1 && (
               <div className="absolute bottom-5 inset-x-0 flex justify-center gap-1.5 px-10">
-                {profile.photos.map((_, i) => (
+                {profile.photos.map((_: any, i: number) => (
                   <div key={i} className={"h-1 rounded-full transition-all duration-300 " + (i === currentIndex ? "w-8 bg-white" : "w-2 bg-white/40")} />
                 ))}
               </div>
@@ -64,9 +60,7 @@ export default function ProfilePage() {
           </div>
           <div className="p-8 space-y-6">
             <div className="text-center">
-              <h1 className="text-4xl font-black text-slate-800 dark:text-slate-100 tracking-tight">
-                {profile.name} <span className="text-indigo-500 font-light">/ {profile.age}</span>
-              </h1>
+              <h1 className="text-4xl font-black text-slate-800 dark:text-slate-100 tracking-tight">{profile.name} <span className="text-indigo-500 font-light">/ {profile.age}</span></h1>
               <p className="text-sm font-bold text-indigo-600 uppercase tracking-[0.2em] mt-2">{profile.city}</p>
             </div>
             <p className="text-slate-500 italic text-base leading-relaxed text-center">{profile.bio}</p>
